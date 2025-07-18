@@ -1,34 +1,38 @@
 package softserve.academy
 
 open class Warrior(
-    var health: Int = 50,
-    val attack: Int = 5
-)
+    health: Int = Props.Warrior.HEALTH,
+    val attack: Int = Props.Warrior.ATTACK
+) {
+    var health = health
+        private set
+
+    private val initialHealth = health
+
+    protected fun heal(points: Int) {
+        check(points >= 0) { "heal points should be non-negative" }
+        health += points
+        if (health > initialHealth) {
+            health = initialHealth
+        }
+    }
+
+    open infix fun hits(other: Warrior) {
+        other.acceptDamage(attack)
+    }
+    open fun acceptDamage(damage: Int) {
+        check(damage >= 0) { "damage should be non-negative" }
+        health -= damage
+    }
+}
 
 val Warrior.isAlive: Boolean
     get() = health > 0
 
-infix fun Warrior.hits(other: Warrior) {
-    other.health -= this.attack
-}
 
-class Knight : Warrior(attack = 7)
-
-class Army {
-    private val troops = mutableListOf<Warrior>()
-
-    fun addUnit(warrior: Warrior) {
-        troops.add(warrior)
-    }
-
-    val isAlive: Boolean
-        get() = troops.any { it.isAlive }
-
-    val champion: Warrior
-        get() = troops.find { it.isAlive }!!
-
-    fun iterator(): Iterator<Warrior> = troops.iterator()
-}
+class Knight : Warrior(
+    health = Props.Knight.HEALTH,
+    attack = Props.Knight.ATTACK)
 
 fun Army.addUnits(n: Int, factory: () -> Warrior) {
     repeat(n) { addUnit(factory()) }

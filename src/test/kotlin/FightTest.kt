@@ -25,12 +25,16 @@ class FightTest {
     fun `Warrior should loose to Knight`() {
         val dave = Warrior()
         val carl = Knight()
+        val leftoverCarlHealth = 10
+        val leftoverDaveHealth = -6
 
         val res = fight(dave, carl)
 
         assertFalse(res) { "Warrior should lose to Knight" }
         assertTrue(carl.isAlive) { "Knight winner should be alive" }
         assertFalse(dave.isAlive) { "Warrior defeated should not be alive" }
+        assertEquals(leftoverCarlHealth, carl.health) { "The Knight should have health = 10 at the end" }
+        assertEquals(leftoverDaveHealth, dave.health) { "The Warrior should have health = -6 at the end" }
     }
 
     @Test
