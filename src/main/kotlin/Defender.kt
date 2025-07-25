@@ -2,7 +2,7 @@ package softserve.academy
 
 import kotlin.math.max
 
-class Defender() : Warrior(
+class Defender() : WarriorImpl(
     health = Props.Defender.HEALTH,
     attack = Props.Defender.ATTACK
 ) {

@@ -1,78 +1,20 @@
 package softserve.academy
 
-import java.time.Year
-import java.util.UUID
-
 fun main() {
-    val acc: Person.Account = Person.Account()
-    val person = Person("John")
-    val bankAccount = BankAccount(100)
-    bankAccount.Transaction().pay(10)
-    bankAccount.Transaction().pay(20)
-    val transaction = bankAccount.Transaction()
-    transaction.pay(30)
-    transaction.pay(30)
-}
+    val myArmy = Army()
+    myArmy.addUnits(3) { Knight() }
 
-sealed interface I
+    val enemyArmy = Army()
+    enemyArmy.addUnits(3) { Warrior() }
 
-class AI : I
+    val army3 = Army()
+    army3.addUnits(20) { Warrior() }
+    army3.addUnits(5) { Knight() }
 
-class BankAccount(private var balance: Int) {
-    private val id: UUID = UUID.randomUUID()
+    val army4 = Army()
+    army4.addUnits(30) { Warrior() }
 
-    inner class Transaction {
-        private val id: UUID = UUID.randomUUID()
-
-        fun pay(amount: Int) {
-            balance -= amount
-            println("paying $amount from account #${this@BankAccount.id} as" +
-                    " transaction #${this.id} ")
-        }
-    }
-}
-
-class Person(val firstName: String) {
-    class Account {
-        fun foo(person: Person) {
-            println(person.firstName)
-        }
-    }
-}
-
-
-interface CanPassExam {
-    fun passExam()
-    fun foo() {}
-    var grade: Int
-}
-
-interface B
-
-abstract class Human(val name: String) {
-    abstract fun hello()
-    abstract val age: Int
-}
-
-class Student(
-    name: String,
-    private val yearOfBirth: Year = Year.now()
-) : Human(name), CanPassExam, B {
-
-    override var grade: Int
-        get() = TODO("Not yet implemented")
-        set(value) {
-            TODO()
-        }
-
-    override fun passExam() {
-        TODO("Not yet implemented")
-    }
-
-    override val age: Int
-        get() = Year.now().value - yearOfBirth.value
-
-    override fun hello() {
-        println("Hello, my name is $name, I like programming!")
-    }
+    check(fight(myArmy, enemyArmy) == true)
+    check(fight(army3, army4) == false)
+    println("OK")
 }

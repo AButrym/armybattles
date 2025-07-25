@@ -1,6 +1,6 @@
 package softserve.academy
 
-class Vampire : Warrior(
+class Vampire : WarriorImpl(
     health = Props.Vampire.HEALTH,
     attack = Props.Vampire.ATTACK
 ) {

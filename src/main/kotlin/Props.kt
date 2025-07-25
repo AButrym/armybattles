@@ -20,4 +20,8 @@ object Props {
         const val ATTACK = 4
         const val VAMPIRISM = 50
     }
+    object Lancer {
+        const val HEALTH = 50
+        const val ATTACK = 6
+    }
 }
