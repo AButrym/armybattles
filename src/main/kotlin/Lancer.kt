@@ -1,12 +1,14 @@
 package softserve.academy
 
-class Lancer : WarriorImpl(
-    health = Props.Lancer.HEALTH,
-    attack = Props.Lancer.ATTACK
+class Lancer : BaseWarrior(
+    health = Props.Lancer.HEALTH
 ) {
     companion object {
         private const val PIERCING_PERCENTAGE = 50
     }
+
+    override val attack: Int
+        get() = Props.Lancer.ATTACK
 
     override fun hits(other: Warrior) {
         val healthBefore = other.health

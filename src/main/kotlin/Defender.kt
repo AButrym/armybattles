@@ -2,11 +2,17 @@ package softserve.academy
 
 import kotlin.math.max
 
-class Defender() : WarriorImpl(
-    health = Props.Defender.HEALTH,
-    attack = Props.Defender.ATTACK
-) {
+interface HasDefense {
     val defense: Int
+}
+
+class Defender() : BaseWarrior(
+    health = Props.Defender.HEALTH
+), HasDefense {
+    override val attack: Int
+        get() = Props.Defender.ATTACK
+
+    override val defense: Int
         get() = Props.Defender.DEFENSE
 
     override fun acceptDamage(damage: Int) {

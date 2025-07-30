@@ -1,17 +1,42 @@
 package softserve.academy
 
+sealed interface Command {
+    object ChampionHitOpponent : Command
+}
+
+fun interface CommandHandler {
+    fun handle(command: Command, origin: Warrior)
+}
+
+
 class Army {
     private val troops = mutableListOf<Warrior>()
 
-    interface WarriorInArmy : Warrior {
+    interface WarriorInArmy : Warrior, CommandHandler {
         val nextBehind: Warrior?
     }
 
-    private class WarriorInArmyDecorator(val warrior: Warrior)
-        : Warrior by warrior, WarriorInArmy
-    {
+    private class WarriorInArmyDecorator(val warrior: Warrior) : Warrior by warrior, WarriorInArmy {
         var _nextBehind: Warrior? = null
         override val nextBehind: Warrior? get() = _nextBehind
+        override fun handle(command: Command, origin: Warrior) {
+            if (origin != this) when (command) {
+                Command.ChampionHitOpponent -> {
+                    if (warrior is CanHealOthers
+                        && origin is Healable
+                    ) {
+                        warrior.heal(origin)
+                    }
+                }
+            }
+            (nextBehind as? WarriorInArmy)?.handle(command, this)
+        }
+
+        override fun hits(other: Warrior) {
+            warrior.hits(other)
+            handle(Command.ChampionHitOpponent, this)
+        }
+
     }
 
     fun addUnit(warrior: Warrior) {
