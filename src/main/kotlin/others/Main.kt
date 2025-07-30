@@ -1,4 +1,4 @@
-package softserve.academy.demo
+package softserve.academy.others
 
 import java.time.Year
 import java.util.UUID

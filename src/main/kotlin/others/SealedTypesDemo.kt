@@ -1,4 +1,4 @@
-package softserve.academy
+package softserve.academy.others
 
 sealed interface Action {
     class Move(val x: Int, val y: Int) : Action
