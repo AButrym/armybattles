@@ -1,42 +1,39 @@
 package com.softserve.academy.models
 
-
+import com.softserve.academy.models.FightService.battle
 
 class Army {
-    private val units: MutableList<Warrior> = mutableListOf()
+    val warriors = mutableListOf<Warrior>()
 
-
-    val isAlive: Boolean
-        get() = units.any { it.isAlive }
-
-    fun addUnit(unit: Warrior) {
-        units.add(unit)
+    interface WarriorInArmy : Warrior {
+        val nextBehind: Warrior?
     }
 
-    fun getFirstAliveUnit(): Warrior? {
-        return units.firstOrNull { it.isAlive }
+    private class WarriorInArmyDecorator(val warrior: Warrior) : Warrior by warrior, WarriorInArmy {
+        var _nextBehind: Warrior? = null
+        override val nextBehind: Warrior? get() = _nextBehind
     }
 
-    fun getAsWarriorNode(): WarriorNode?{
-        val aliveUnits=units.filter{it.isAlive}
+    fun addUnits(amount: Int, warrior: () -> Warrior) {
+        repeat(amount) {
+            val wrapped = WarriorInArmyDecorator(warrior())
 
-        return linkToNodes(aliveUnits)
-    }
+            if (warriors.isNotEmpty()) {
+                val last = warriors.last() as WarriorInArmyDecorator
+                last._nextBehind = wrapped
+            }
 
-    fun linkToNodes(warriors: List<Warrior>): WarriorNode? {
-        if (warriors.isEmpty()) return null
-        var current: WarriorNode? = null
-        for (warrior in warriors.reversed()) {
-            current = WarriorNode(warrior, current)
+            warriors.add(wrapped)
         }
-        return current
     }
-
 }
 
+fun main() {
+    val army1 = Army()
+    val army2 = Army()
 
-fun Army.addUnits(n: Int, factory: () -> Warrior) {
-    repeat(n) {
-        addUnit(factory())
-    }
+    army1.addUnits(2) { Knight() }
+    army2.addUnits(2) { Warrior() }
+
+    println(battle(army1, army2))
 }

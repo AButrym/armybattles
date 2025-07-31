@@ -1,11 +1,6 @@
 package com.softserve.academy.services
 
 import com.softserve.academy.models.Army
-import com.softserve.academy.models.Defender
-import com.softserve.academy.models.Lancer
-import com.softserve.academy.models.Vampire
-import com.softserve.academy.models.Knight
-import com.softserve.academy.models.Warrior
 import com.softserve.academy.models.addUnits
 import org.junit.jupiter.api.Assertions.*
 import kotlin.test.Test

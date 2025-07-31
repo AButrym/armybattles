@@ -1,15 +1,26 @@
 package com.softserve.academy.models
 
+import com.softserve.academy.models.FightService.fight
 
-class Vampire(val vampirismPercentage: Int = ModelProps.Vampire.VAMPIRISM_PERCENTAGE) : Warrior(
-    stockHealth = ModelProps.Vampire.HEALTH,
-    attackPower = ModelProps.Vampire.ATTACK_POWER,
+class Vampire : WarriorImpl(
+    health = Props.Vampire.HEALTH,
+    attack = Props.Vampire.ATTACK
 ) {
+    val vampirism: Int
+        get() = Props.Vampire.VAMPIRISM
 
-    override fun hits(opponent: WarriorNode) {
-        val initialHealth = opponent.warrior.health
-        super.hits(opponent)
-        val damageDealt = (initialHealth - opponent.warrior.health).coerceAtLeast(0)
-        this.heal((damageDealt*vampirismPercentage)/100)
+    override fun hits(other: Warrior) {
+        val initialHealth = other.health
+        super.hits(other)
+        val currentHealth = other.health
+        val healingPoints = (initialHealth - currentHealth) * vampirism / 100
+        heal(healingPoints)
     }
+}
+
+fun main() {
+    val vampire = Vampire()
+    val defender = Defender()
+
+    println(fight(vampire, defender))
 }
