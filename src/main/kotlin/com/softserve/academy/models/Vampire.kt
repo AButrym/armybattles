@@ -1,7 +1,5 @@
 package com.softserve.academy.models
 
-import com.softserve.academy.models.FightService.fight
-
 class Vampire : WarriorImpl(
     health = Props.Vampire.HEALTH,
     attack = Props.Vampire.ATTACK

@@ -1,7 +1,7 @@
 
-import com.softserve.academy.models.FightService.fight
 import com.softserve.academy.models.Knight
 import com.softserve.academy.models.Warrior
+import com.softserve.academy.models.fight
 import com.softserve.academy.models.isAlive
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName

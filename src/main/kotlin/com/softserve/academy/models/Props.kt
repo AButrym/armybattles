@@ -23,4 +23,9 @@ object Props {
         const val HEALTH = 50
         const val ATTACK = 6
     }
+    object Healer {
+        const val HEALTH = 60
+        const val ATTACK = 0
+        const val HEAL = 2
+    }
 }

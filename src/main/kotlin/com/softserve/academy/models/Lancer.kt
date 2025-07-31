@@ -1,8 +1,5 @@
 package com.softserve.academy.models
 
-import com.softserve.academy.models.FightService.battle
-import com.softserve.academy.models.FightService.fight
-
 class Lancer : WarriorImpl(
     health = Props.Lancer.HEALTH,
     attack = Props.Lancer.ATTACK

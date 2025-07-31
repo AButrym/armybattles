@@ -1,8 +1,6 @@
 
 import com.softserve.academy.models.*
-import com.softserve.academy.models.FightService.battle
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class BattleTest {
@@ -224,5 +222,125 @@ class BattleTest {
         }
 
         assertFalse(battle(armyWarrior, armyLancer))
+    }
+
+    @Test
+    fun test17Battle() {
+        val army1 = Army().apply {
+            addUnits(7) { Lancer() }
+            addUnits(3) { Vampire() }
+            addUnits(1) { Healer() }
+            addUnits(4) { Warrior() }
+            addUnits(1) { Healer() }
+            addUnits(2) { Defender() }
+        }
+        val army2 = Army().apply {
+            addUnits(4) { Warrior() }
+            addUnits(4) { Defender() }
+            addUnits(1) { Healer() }
+            addUnits(6) { Vampire() }
+            addUnits(4) { Lancer() }
+        }
+
+        assertEquals(true, battle(army1, army2))
+    }
+
+    @Test
+    fun test18Battle() {
+        val army1 = Army().apply {
+            addUnits(1) { Lancer() }
+            addUnits(3) { Warrior() }
+            addUnits(1) { Healer() }
+            addUnits(4) { Warrior() }
+            addUnits(1) { Healer() }
+            addUnits(2) { Knight() }
+        }
+        val army2 = Army().apply {
+            addUnits(4) { Warrior() }
+            addUnits(4) { Defender() }
+            addUnits(1) { Healer() }
+            addUnits(6) { Vampire() }
+            addUnits(4) { Lancer() }
+        }
+
+        assertEquals(false, battle(army1, army2))
+    }
+
+    @Test
+    fun test19Battle() {
+        val army1 = Army().apply {
+            addUnits(5) { Lancer() }
+            addUnits(3) { Vampire() }
+            addUnits(4) { Warrior() }
+            addUnits(2) { Defender() }
+        }
+        val army2 = Army().apply {
+            addUnits(4) { Warrior() }
+            addUnits(4) { Defender() }
+            addUnits(6) { Vampire() }
+            addUnits(5) { Lancer() }
+        }
+
+        assertEquals(false, straightFight(army1, army2))
+    }
+
+    @Test
+    fun test20Battle() {
+        val army1 = Army().apply {
+            addUnits(7) { Lancer() }
+            addUnits(3) { Vampire() }
+            addUnits(4) { Warrior() }
+            addUnits(2) { Defender() }
+        }
+        val army2 = Army().apply {
+            addUnits(4) { Warrior() }
+            addUnits(4) { Defender() }
+            addUnits(6) { Vampire() }
+            addUnits(4) { Lancer() }
+        }
+
+        assertEquals(true, straightFight(army1, army2))
+    }
+
+    @Test
+    fun test21Battle() {
+        val army1 = Army().apply {
+            addUnits(7) { Lancer() }
+            addUnits(3) { Vampire() }
+            addUnits(1) { Healer() }
+            addUnits(4) { Warrior() }
+            addUnits(1) { Healer() }
+            addUnits(2) { Defender() }
+        }
+        val army2 = Army().apply {
+            addUnits(4) { Warrior() }
+            addUnits(4) { Defender() }
+            addUnits(1) { Healer() }
+            addUnits(6) { Vampire() }
+            addUnits(4) { Lancer() }
+        }
+
+        assertEquals(false, straightFight(army1, army2))
+    }
+
+    @Test
+    fun test22Battle() {
+        val army1 = Army().apply {
+            addUnits(4) { Lancer() }
+            addUnits(3) { Warrior() }
+            addUnits(1) { Healer() }
+            addUnits(4) { Warrior() }
+            addUnits(1) { Healer() }
+            addUnits(2) { Knight() }
+        }
+        val army2 = Army().apply {
+            addUnits(4) { Warrior() }
+            addUnits(4) { Defender() }
+            addUnits(1) { Healer() }
+            addUnits(2) { Vampire() }
+            addUnits(4) { Lancer() }
+        }
+
+        assertEquals(true, straightFight(army1, army2))
     }
 }

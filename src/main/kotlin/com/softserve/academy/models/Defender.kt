@@ -1,7 +1,5 @@
 package com.softserve.academy.models
 
-import com.softserve.academy.models.FightService.fight
-import com.softserve.academy.models.FightService.battle
 import kotlin.math.max
 
 class Defender : WarriorImpl(

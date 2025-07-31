@@ -1,7 +1,5 @@
 package com.softserve.academy.models
 
-import com.softserve.academy.models.FightService.battle
-
 class Army {
     val warriors = mutableListOf<Warrior>()
 
