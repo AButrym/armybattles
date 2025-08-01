@@ -28,4 +28,6 @@ interface Warrior : HasHealth, HasAttack, CanAcceptDamage {
     companion object {
         operator fun invoke() = WarriorImpl()
     }
+
+    override fun toString(): String
 }

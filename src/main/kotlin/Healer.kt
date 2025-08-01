@@ -1,8 +1,12 @@
 package softserve.academy
 
+import org.slf4j.LoggerFactory
+
 fun interface CanHealOthers {
     fun heal(warrior: Healable)
 }
+
+private val log = LoggerFactory.getLogger("healer")
 
 class Healer: BaseWarrior(
     health = Props.Healer.HEALTH
@@ -14,8 +18,21 @@ class Healer: BaseWarrior(
         get() = Props.Healer.HEAL_POWER
 
     override fun heal(warrior: Healable) {
+            log.debug("heal: {}", warrior)
             warrior.heal(healPower)
     }
+}
+
+fun simpleTest() {
+    val army1 = Army().apply {
+        addUnits(1) { Lancer() }
+    }
+    val army2 = Army().apply {
+        addUnits(1) { Warrior() }
+        addUnits(1) { Healer() }
+    }
+    val res = fight(army1, army2)
+    println(res)
 }
 
 fun main() {

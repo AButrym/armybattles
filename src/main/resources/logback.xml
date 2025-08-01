@@ -28,5 +28,7 @@
     </root>
     
     <!-- Application-specific logger configuration -->
-    <logger name="softserve.academy" level="ALL" />
+    <logger name="softserve.academy" level="INFO" />
+    <logger name="softserve.academy.demo.LoggingExample" level="WARN" />
+    <logger name="army" level="INFO" />
 </configuration>
