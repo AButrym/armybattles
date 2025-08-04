@@ -1,9 +1,10 @@
 package com.softserve.academy.models
 
-class Lancer : WarriorImpl(
-    health = Props.Lancer.HEALTH,
-    attack = Props.Lancer.ATTACK
+class Lancer : BaseWarrior(
+    health = Props.Lancer.HEALTH
 ) {
+    override val attack: Int
+        get() = Props.Lancer.ATTACK
 
     companion object {
         private const val PIERCING_PERCENTAGE = 50

@@ -1,9 +1,11 @@
 package com.softserve.academy.models
 
-class Vampire : WarriorImpl(
-    health = Props.Vampire.HEALTH,
-    attack = Props.Vampire.ATTACK
+class Vampire : BaseWarrior(
+    health = Props.Vampire.HEALTH
 ) {
+    override val attack: Int
+        get() = Props.Vampire.ATTACK
+
     val vampirism: Int
         get() = Props.Vampire.VAMPIRISM
 
