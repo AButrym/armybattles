@@ -23,15 +23,21 @@ class Army {
             if (origin != this) {
                 when (command) {
                     Command.ChampionHitOpponent -> {
+                        val originUnwrapped = (origin as? WarriorInArmyDecorator)?.unwrap
                         if (warrior is CanHealOthers
-                            && origin is Healable) {
-                            warrior.heal(origin)
+                            && originUnwrapped is Healable) {
+                            warrior.heal(originUnwrapped)
                         }
                     }
                 }
             }
 
             (nextBehind as? WarriorInArmy)?.handle(command, this)
+        }
+
+        val unwrap: Warrior get() = when (warrior) {
+            is WarriorInArmyDecorator -> warrior.unwrap
+            else -> warrior
         }
 
         override fun hits(other: Warrior) {
