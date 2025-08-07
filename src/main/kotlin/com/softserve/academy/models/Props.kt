@@ -28,4 +28,10 @@ object Props {
         const val ATTACK = 0
         const val HEAL = 2
     }
+    object General {
+        const val HEALTH = 60
+        const val ATTACK = 6
+        const val DEFENSE = 1
+        const val MOTIVATION = 50
+    }
 }

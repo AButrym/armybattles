@@ -343,4 +343,57 @@ class BattleTest {
 
         assertEquals(true, straightFight(army1, army2))
     }
+
+    @Test
+    fun test23Battle() {
+        val army1 = Army().apply {
+            addUnits(1) { General() }
+            addUnits(1) { Warrior() }
+        }
+        val army2 = Army().apply {
+            addUnits(2) { Warrior() }
+        }
+
+        assertEquals(true, battle(army1, army2))
+    }
+
+    @Test
+    fun test24Battle() {
+        val army1 = Army().apply {
+            addUnits(1) { General() }
+            addUnits(1) { Healer() }
+        }
+        val army2 = Army().apply {
+            addUnits(2) { Warrior() }
+        }
+
+        assertEquals(true, battle(army1, army2))
+    }
+
+    @Test
+    fun test25Battle() {
+        val army1 = Army().apply {
+            addUnits(1) { General() }
+            addUnits(1) { Warrior() }
+        }
+        val army2 = Army().apply {
+            addUnits(3) { Warrior() }
+        }
+
+        assertEquals(true, battle(army1, army2))
+    }
+
+    @Test
+    fun test26Battle() {
+        val army1 = Army().apply {
+            addUnits(1) { General() }
+            addUnits(1) { Warrior() }
+        }
+        val army2 = Army().apply {
+            addUnits(2) { Knight() }
+            addUnits(1) { Lancer() }
+        }
+
+        assertEquals(false, battle(army1, army2))
+    }
 }

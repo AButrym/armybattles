@@ -1,5 +1,7 @@
 package com.softserve.academy.models
 
+import kotlin.math.floor
+
 sealed interface Command {
     object ChampionHitOpponent : Command
 }
@@ -15,7 +17,7 @@ class Army {
         val nextBehind: Warrior?
     }
 
-    private class WarriorInArmyDecorator(val warrior: Warrior) : Warrior by warrior, WarriorInArmy {
+    private open class WarriorInArmyDecorator(val warrior: Warrior) : Warrior by warrior, WarriorInArmy {
         var _nextBehind: Warrior? = null
         override val nextBehind: Warrior? get() = _nextBehind
 
@@ -25,7 +27,8 @@ class Army {
                     Command.ChampionHitOpponent -> {
                         val originUnwrapped = (origin as? WarriorInArmyDecorator)?.unwrap
                         if (warrior is CanHealOthers
-                            && originUnwrapped is Healable) {
+                            && originUnwrapped is Healable
+                        ) {
                             warrior.heal(originUnwrapped)
                         }
                     }
@@ -35,10 +38,11 @@ class Army {
             (nextBehind as? WarriorInArmy)?.handle(command, this)
         }
 
-        val unwrap: Warrior get() = when (warrior) {
-            is WarriorInArmyDecorator -> warrior.unwrap
-            else -> warrior
-        }
+        val unwrap: Warrior
+            get() = when (warrior) {
+                is WarriorInArmyDecorator -> warrior.unwrap
+                else -> warrior
+            }
 
         override fun hits(other: Warrior) {
             warrior.hits(other)
@@ -46,9 +50,69 @@ class Army {
         }
     }
 
+    private class GeneralDecorator(general: General) : WarriorInArmyDecorator(general) {
+
+        private var activeTurnsLeft = 3  // Counts how many active bonus attacks left
+        private var rechargeTurnsLeft = 0  // Counts how many turns to wait
+
+        override fun hits(other: Warrior) {
+            // Calculate the General's base attack
+            val baseAttack = unwrap.attack
+
+            // Extract motivation from the unwrapped warrior
+            val motivation = (unwrap as? General)?.motivation ?: 0
+
+            var totalDamage = baseAttack
+
+            val canUseBonus = activeTurnsLeft > 0
+
+            if (canUseBonus) {
+                // Calculate 50% of the nextBehind's attack
+                val bonusAttack = floor(((nextBehind?.attack ?: 0) * motivation) / 100.0).toInt()
+
+                // Total damage is base + 50% of nextBehind's attack
+                totalDamage += bonusAttack
+            }
+
+            other.acceptDamage(totalDamage)
+
+            // if nextBehind has 0 attack and can heal
+            if (canUseBonus
+                && (nextBehind?.attack ?: 0) == 0
+                && nextBehind is CanHealOthers
+                && unwrap is Healable) {
+
+                val healPower = (nextBehind as Healer).healPower
+                val bonusHeal = floor(healPower * ((motivation / 100.0))).toInt()
+                (unwrap as Healable).heal(healPower + bonusHeal)
+            }
+
+            // Cycle handling logic
+            if (canUseBonus) {
+                activeTurnsLeft--
+                if (activeTurnsLeft == 0) {
+                    rechargeTurnsLeft = 3
+                }
+            } else if (rechargeTurnsLeft > 0) {
+                rechargeTurnsLeft--
+                if (rechargeTurnsLeft == 0) {
+                    activeTurnsLeft = 3
+                }
+            }
+
+            // Trigger any command handlers
+            handle(Command.ChampionHitOpponent, this)
+        }
+    }
+
     fun addUnits(amount: Int, warrior: () -> Warrior) {
         repeat(amount) {
-            val wrapped = WarriorInArmyDecorator(warrior())
+            val base = warrior()
+
+            val wrapped: WarriorInArmyDecorator = when (base) {
+                is General -> GeneralDecorator(base)
+                else -> WarriorInArmyDecorator(base)
+            }
 
             if (warriors.isNotEmpty()) {
                 val last = warriors.last() as WarriorInArmyDecorator
